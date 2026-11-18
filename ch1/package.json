@@ -1,0 +1,16 @@
+{
+  "name": "mori-bistro",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "test": "node --test --experimental-test-isolation=none tests/menu.test.js",
+    "build": "node build.mjs",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1"
+  }
+}
