@@ -1,4 +1,7 @@
-import { menu, categories, totals, money, makeLine } from './menu.js';
+import { menu as seedMenu, categories, totals, money, makeLine } from './menu.js';
+import { readCatalog, syncCart, imageSource, CATALOG_KEY } from './catalog.js';
+let menu, catalogError = '';
+try { menu = readCatalog(); } catch { menu = seedMenu.map(item => ({ ...item, visible: true })); catalogError = '商品資料暫時無法讀取，目前顯示示意菜單。'; }
 const $ = s => document.querySelector(s);
 const escape = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 let cart = [], table = '08', category = 'all', selected, quantity = 1, toastTimer;
@@ -7,7 +10,7 @@ try {
   if (/^(0[1-9]|1\d|20)$/.test(saved.table)) table = saved.table;
   if (Array.isArray(saved.cart)) cart = saved.cart.flatMap(line => {
     const item = menu.find(item => item.id === line.id);
-    if (!item || !Number.isInteger(line.quantity) || line.quantity < 1 || line.quantity > 99) return [];
+    if (!item || !item.visible || !Number.isInteger(line.quantity) || line.quantity < 1 || line.quantity > 99) return [];
     const option = item.options?.includes(line.option) ? line.option : (item.options?.[0] || '');
     return [makeLine(item, line.quantity, option, String(line.note || '').slice(0, 100))];
   });
@@ -17,11 +20,11 @@ function persist() { try { localStorage.setItem('mori-order', JSON.stringify({ c
 function toast(message) { $('#toast').textContent = message; $('#toast').classList.add('visible'); clearTimeout(toastTimer); toastTimer = setTimeout(() => $('#toast').classList.remove('visible'), 2400); }
 function renderMenu() {
   const query = $('#search').value.trim().toLowerCase();
-  const dishes = menu.filter(item => (category === 'all' || item.category === category) && (!$('#vegetarian').checked || item.vegetarian) && `${item.name} ${item.en} ${item.description}`.toLowerCase().includes(query));
+  const dishes = menu.filter(item => item.visible && (category === 'all' || item.category === category) && (!$('#vegetarian').checked || item.vegetarian) && `${item.name} ${item.en} ${item.description}`.toLowerCase().includes(query));
   const active = categories.find(c => c[0] === category);
   $('#category-title').innerHTML = `${active[1]} <span>${active[2]}</span>`;
   $('#result-count').textContent = `${dishes.length} 道美好滋味`;
-  $('#menu-grid').innerHTML = dishes.length ? dishes.map(item => `<article class="dish-card"><button class="card-image-button" data-dish="${item.id}" aria-label="查看${item.name}"><img src="assets/${item.image}.jpg" alt="${item.name}" loading="lazy">${item.tag ? `<span class="card-tag ${item.tag === '人氣必點' ? 'popular' : ''}">${item.tag}</span>` : ''}</button><div class="card-content"><h4>${item.name}</h4><span class="card-en">${item.en}</span><p class="card-description">${item.description}</p><div class="card-bottom"><span class="card-price"><small>NT$</small> ${money(item.price)}</span><button class="add-button" data-dish="${item.id}" aria-label="加入${item.name}">＋</button></div></div></article>`).join('') : '<div class="no-results"><h3>這個味道，還沒找到。</h3><p>換個關鍵字，或看看其他分類吧。</p><button id="reset-filters">查看所有餐點</button></div>';
+  $('#menu-grid').innerHTML = dishes.length ? dishes.map(item => `<article class="dish-card"><button class="card-image-button" data-dish="${item.id}" aria-label="查看${escape(item.name)}"><img src="${escape(imageSource(item))}" alt="${escape(item.name)}" loading="lazy">${item.tag ? `<span class="card-tag ${item.tag === '人氣必點' ? 'popular' : ''}">${escape(item.tag)}</span>` : ''}</button><div class="card-content"><h4>${escape(item.name)}</h4><span class="card-en">${escape(item.en)}</span><p class="card-description">${escape(item.description)}</p><div class="card-bottom"><span class="card-price"><small>NT$</small> ${money(item.price)}</span><button class="add-button" data-dish="${item.id}" aria-label="加入${escape(item.name)}">＋</button></div></div></article>`).join('') : '<div class="no-results"><h3>這個味道，還沒找到。</h3><p>換個關鍵字，或看看其他分類吧。</p><button id="reset-filters">查看所有餐點</button></div>';
   document.querySelectorAll('[data-category]').forEach(b => { b.classList.toggle('active', b.dataset.category === category); b.setAttribute('aria-pressed', String(b.dataset.category === category)); });
 }
 function renderCart() {
@@ -31,16 +34,17 @@ function renderCart() {
   for (const id of ['subtotal', 'service', 'total']) $(`#${id}`).textContent = `NT$ ${money(sum[id])}`;
   $('#mobile-total').textContent = `NT$ ${money(sum.total)}`;
   $('#submit-order').disabled = !cart.length;
-  $('#cart-items').innerHTML = cart.length ? cart.map((item, index) => `<div class="cart-item"><img src="assets/${item.image}.jpg" alt=""><div class="cart-item-info"><h4>${item.name}</h4>${item.option || item.note ? `<p>${escape([item.option, item.note].filter(Boolean).join('・'))}</p>` : ''}<div class="cart-item-bottom"><span>NT$ ${money(item.price * item.quantity)}</span><div class="quantity"><button data-change="-1" data-index="${index}" aria-label="減少${item.name}">−</button><output>${item.quantity}</output><button data-change="1" data-index="${index}" aria-label="增加${item.name}" ${item.quantity >= 99 ? 'disabled' : ''}>＋</button></div></div></div><button class="remove-item" data-remove="${index}" aria-label="移除${item.name}">×</button></div>`).join('') : `<div class="empty-cart"><svg viewBox="0 0 64 64" fill="none" stroke-width="1"><path d="M12 25h40l-5 27H17zM22 26l6-16m14 16-6-16M24 33v12m8-12v12m8-12v12"/><path d="M9 25h46"/><path d="m48 8 1-4m4 8 4-2M14 14l-3-3"/></svg><h3>你的美味故事，從這裡開始</h3><p>選幾道喜歡的料理，<br>為今晚增添一點美好。</p></div>`;
+  $('#cart-items').innerHTML = cart.length ? cart.map((item, index) => `<div class="cart-item"><img src="${escape(imageSource(item))}" alt=""><div class="cart-item-info"><h4>${escape(item.name)}</h4>${item.option || item.note ? `<p>${escape([item.option, item.note].filter(Boolean).join('・'))}</p>` : ''}<div class="cart-item-bottom"><span>NT$ ${money(item.price * item.quantity)}</span><div class="quantity"><button data-change="-1" data-index="${index}" aria-label="減少${escape(item.name)}">−</button><output>${item.quantity}</output><button data-change="1" data-index="${index}" aria-label="增加${escape(item.name)}" ${item.quantity >= 99 ? 'disabled' : ''}>＋</button></div></div></div><button class="remove-item" data-remove="${index}" aria-label="移除${escape(item.name)}">×</button></div>`).join('') : `<div class="empty-cart"><svg viewBox="0 0 64 64" fill="none" stroke-width="1"><path d="M12 25h40l-5 27H17zM22 26l6-16m14 16-6-16M24 33v12m8-12v12m8-12v12"/><path d="M9 25h46"/><path d="m48 8 1-4m4 8 4-2M14 14l-3-3"/></svg><h3>你的美味故事，從這裡開始</h3><p>選幾道喜歡的料理，<br>為今晚增添一點美好。</p></div>`;
   persist();
 }
 function openDish(id) {
+  if (!refreshCatalog()) return;
   selected = menu.find(item => item.id === id); quantity = 1;
-  $('#dish-image').src = `assets/${selected.image}.jpg`; $('#dish-image').alt = selected.name;
+  $('#dish-image').src = imageSource(selected); $('#dish-image').alt = selected.name;
   $('#dish-name').textContent = selected.name; $('#dish-en').textContent = selected.en;
   $('#dish-description').textContent = selected.description; $('#dish-allergens').textContent = `過敏原資訊：${selected.allergens}${selected.vegetarian ? '・奶蛋素' : ''}`;
   $('#dish-note').value = ''; $('#dish-options').hidden = !selected.options;
-  $('#option-list').innerHTML = (selected.options || []).map((option, index) => `<label><input type="radio" name="option" value="${option}" ${index === 0 ? 'checked' : ''}> ${option}</label>`).join('');
+  $('#option-list').innerHTML = (selected.options || []).map((option, index) => `<label><input type="radio" name="option" value="${escape(option)}" ${index === 0 ? 'checked' : ''}> ${escape(option)}</label>`).join('');
   updateQuantity(); $('#dish-dialog').showModal();
 }
 function updateQuantity() { $('#dish-quantity').textContent = quantity; $('#dish-price').textContent = `NT$ ${money(selected.price * quantity)}`; $('#dish-minus').disabled = quantity === 1; $('#dish-plus').disabled = quantity === 99; }
@@ -54,7 +58,8 @@ $('#menu-grid').addEventListener('click', e => {
 $('#dish-minus').addEventListener('click', () => { quantity = Math.max(1, quantity - 1); updateQuantity(); });
 $('#dish-plus').addEventListener('click', () => { quantity = Math.min(99, quantity + 1); updateQuantity(); });
 $('#dish-form').addEventListener('submit', e => {
-  e.preventDefault(); const line = makeLine(selected, quantity, $('#option-list input:checked')?.value || '', $('#dish-note').value);
+  e.preventDefault(); if (!refreshCatalog() || !selected?.visible) return;
+  const line = makeLine(selected, quantity, $('#option-list input:checked')?.value || '', $('#dish-note').value);
   const existing = cart.find(item => item.key === line.key);
   if (existing && existing.quantity + quantity > 99) { toast('同一餐點最多可點 99 份'); return; }
   if (existing) existing.quantity += quantity; else cart.push(line);
@@ -82,13 +87,15 @@ document.addEventListener('keydown', e => {
 });
 matchMedia('(min-width: 761px)').addEventListener('change', e => { if (e.matches) closeCart(); });
 $('#submit-order').addEventListener('click', () => {
+  if (!refreshCatalog()) return;
   if (!cart.length) return;
   $('#review-table').textContent = `${table} 桌・共 ${totals(cart).count} 份餐點`;
-  $('#review-items').innerHTML = cart.map(item => `<div class="review-item"><div>${item.name} × ${item.quantity}<small>${escape([item.option, item.note].filter(Boolean).join('・'))}</small></div><span>NT$ ${money(item.price * item.quantity)}</span></div>`).join('');
+  $('#review-items').innerHTML = cart.map(item => `<div class="review-item"><div>${escape(item.name)} × ${item.quantity}<small>${escape([item.option, item.note].filter(Boolean).join('・'))}</small></div><span>NT$ ${money(item.price * item.quantity)}</span></div>`).join('');
   $('#review-note').textContent = $('#order-note').value ? `訂單備註：${$('#order-note').value}` : '';
   $('#review-total').textContent = `NT$ ${money(totals(cart).total)}`; $('#review-dialog').showModal();
 });
 $('#confirm-order').addEventListener('click', () => {
+  if (!refreshCatalog()) return;
   if (!cart.length) return;
   const now = new Date(), id = `MORI-${now.getTime().toString(36).toUpperCase()}`;
   const receipt = { id, createdAt: now.toISOString(), table, items: cart, note: $('#order-note').value, ...totals(cart), status: 'demo' };
@@ -98,4 +105,21 @@ $('#confirm-order').addEventListener('click', () => {
 });
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
 document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('click', e => { const rect = dialog.getBoundingClientRect(); if (e.target === dialog && (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom)) dialog.close(); }));
+function refreshCatalog() {
+  let next;
+  try { next = readCatalog(); } catch { toast('商品資料無法讀取，請重新整理後再試。'); return false; }
+  if (JSON.stringify(next) === JSON.stringify(menu)) return true;
+  menu = next;
+  const nextCart = syncCart(cart, menu);
+  const cartChanged = JSON.stringify(nextCart) !== JSON.stringify(cart);
+  cart = nextCart;
+  for (const selector of ['#dish-dialog', '#review-dialog']) { if ($(selector).open) $(selector).close(); }
+  renderMenu(); renderCart();
+  toast(cartChanged ? '菜單已更新：停售商品已移除，點單金額已重新計算，請再次確認。' : '菜單已更新，請重新選擇餐點。');
+  return false;
+}
+window.addEventListener('storage', event => { if (event.key === CATALOG_KEY || event.key === null) refreshCatalog(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshCatalog(); });
+window.addEventListener('pageshow', refreshCatalog);
 renderMenu(); renderCart();
+if (catalogError) toast(catalogError);

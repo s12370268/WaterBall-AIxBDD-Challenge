@@ -9,7 +9,7 @@ npm run dev
 
 開啟 http://localhost:5173 。完整開發說明、驗證方式與設計紀錄請參閱 [DEVELOPMENT.md](DEVELOPMENT.md)。目前為純前端，送單不會傳至餐廳。
 
-後台入口：http://localhost:5173/admin/ 。示範帳號 `admin@mori.demo`，密碼 `Mori2026!`。目前提供純前端模擬登入、管理首頁與登出；商品新增、刪除留待後續開發。
+後台入口：http://localhost:5173/admin/ 。示範帳號 `admin@mori.demo`，密碼 `Mori2026!`。登入後可進入「商品管理」，新增、編輯、刪除商品，上傳照片並設定價格、描述與前台顯示狀態。資料保存在目前瀏覽器，同一瀏覽器的前台會同步更新，不會同步到其他裝置。
 
 ---
 

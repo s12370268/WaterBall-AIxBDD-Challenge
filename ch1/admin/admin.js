@@ -1,8 +1,9 @@
 import { menu, categories } from '../menu.js';
 import { validateLogin, createDemoSession, isValidDemoSession, SESSION_KEY } from './auth.js';
+import { initializeProducts } from './products.js';
 
 const $ = selector => document.querySelector(selector);
-let session = null, expiryTimer;
+let session = null, expiryTimer, productManager;
 try { session = JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch { /* 無法儲存時以記憶體維持目前登入。 */ }
 
 function clearErrors() {
@@ -16,6 +17,7 @@ function clearErrors() {
 }
 
 function showLogin(message = '', focus = false) {
+  productManager?.close();
   clearTimeout(expiryTimer);
   session = null;
   try { sessionStorage.removeItem(SESSION_KEY); } catch {}
@@ -39,6 +41,8 @@ function showDashboard(focus = false) {
   document.title = '管理首頁｜森暮 MORI Bistro';
   $('#dish-count').textContent = menu.length;
   $('#category-count').textContent = categories.filter(category => category[0] !== 'all').length;
+  productManager.load();
+  routeWorkspace();
   clearTimeout(expiryTimer);
   expiryTimer = setTimeout(() => showLogin('登入狀態已到期，請重新登入。', true), session.expiresAt - Date.now());
   if (focus) { $('#overview').focus(); window.scrollTo(0, 0); }
@@ -91,4 +95,15 @@ $('#logout-button').addEventListener('click', () => showLogin('', true));
 function recheckSession() { if (session && !isValidDemoSession(session)) showLogin('登入狀態已到期，請重新登入。', true); }
 document.addEventListener('visibilitychange', () => { if (!document.hidden) recheckSession(); });
 window.addEventListener('pageshow', recheckSession);
+function authorize() { if (isValidDemoSession(session)) return true; showLogin('登入狀態已到期，請重新登入。', true); return false; }
+function routeWorkspace() {
+  if ($('#dashboard-view').hidden) return;
+  const products = location.hash === '#products';
+  $('#overview-content').hidden = products; $('#products-content').hidden = !products;
+  $('#workspace-page-name').textContent = products ? '商品管理' : '管理首頁';
+  document.title = `${products ? '商品管理' : '管理首頁'}｜森暮 MORI Bistro`;
+  document.querySelectorAll('[data-admin-nav]').forEach(link => { if ((link.dataset.adminNav === 'products') === products) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current'); });
+}
+window.addEventListener('hashchange', () => { if (!$('#dashboard-view').hidden && authorize()) routeWorkspace(); });
+productManager = initializeProducts(authorize);
 if (isValidDemoSession(session)) showDashboard(); else showLogin(session ? '登入狀態已到期，請重新登入。' : '');

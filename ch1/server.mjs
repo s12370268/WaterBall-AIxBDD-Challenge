@@ -10,7 +10,7 @@ createServer(async (req, res) => {
     const route = pathname === '/' ? '/index.html' : pathname === '/admin/' ? '/admin/index.html' : pathname;
     const file = resolve(root, '.' + route);
     const relative = file.slice(root.length + 1).replaceAll(sep, '/');
-    if (!file.startsWith(root + sep) || !(/^(index\.html|styles\.css|app\.js|menu\.js|admin\/(index\.html|admin\.css|admin\.js|auth\.js)|assets\/[^/]+\.(jpg|svg))$/.test(relative))) { res.writeHead(404).end('Not found'); return; }
+    if (!file.startsWith(root + sep) || !(/^(index\.html|styles\.css|app\.js|menu\.js|catalog\.js|admin\/(index\.html|admin\.css|admin\.js|auth\.js|products\.js|photos\.js|products\.css)|assets\/[^/]+\.(jpg|svg))$/.test(relative))) { res.writeHead(404).end('Not found'); return; }
     res.writeHead(200, { 'Content-Type': types[extname(file)] || 'application/octet-stream' });
     res.end(await readFile(file));
   } catch { res.writeHead(404).end('Not found'); }
