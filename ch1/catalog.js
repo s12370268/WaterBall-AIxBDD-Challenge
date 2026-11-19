@@ -6,6 +6,7 @@ export function validateProduct(item) {
   const errors = {};
   if (typeof item.name !== 'string' || !item.name.trim() || item.name.length > 60) errors.name = '請輸入 1–60 字的商品名稱。';
   if (typeof item.description !== 'string' || !item.description.trim() || item.description.length > 500) errors.description = '請輸入 1–500 字的商品描述。';
+  if (item.tag !== undefined && (typeof item.tag !== 'string' || item.tag.length > 20)) errors.tag = '餐點標籤最多 20 字，或留白不顯示。';
   if (item.price === '' || !Number.isSafeInteger(item.price) || item.price < 0 || item.price > 999999) errors.price = '請輸入 0–999,999 元的整數價格。';
   if (!categories.some(c => c[0] !== 'all' && c[0] === item.category)) errors.category = '請選擇商品分類。';
   if (typeof item.image !== 'string' || !(/^[a-zA-Z0-9-]+$/.test(item.image) || /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/]+=*$/.test(item.image)) || item.image.length > 800000) errors.image = '請上傳有效的商品照片。';
