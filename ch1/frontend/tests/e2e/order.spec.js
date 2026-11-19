@@ -1,4 +1,17 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
+test('後端暫時離線不覆寫已存點單，連線恢復後重新確認', async ({ page }) => {
+  const saved = { table: '08', cart: [{ id: 'steak', quantity: 1, option: '五分熟', note: '' }], note: '保留這份點單' };
+  await page.addInitScript(value => localStorage.setItem('mori-order', JSON.stringify(value)), saved);
+  await page.route('**/api/menu', route => route.fulfill({ status: 503, contentType: 'application/json', body: '{"error":"後端暫時離線"}' }));
+  await page.goto('/');
+  await expect(page.locator('#result-count')).toHaveText('0 道美好滋味');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('mori-order')))).toEqual(saved);
+  await page.unroute('**/api/menu');
+  await page.evaluate(() => window.dispatchEvent(new Event('pageshow')));
+  await expect(page.locator('#cart-count')).toHaveText('1');
+  await expect(page.locator('#total')).toHaveText('NT$ 1,078');
+  await expect(page.locator('#order-note')).toHaveValue('保留這份點單');
+});
 test('桌面：搜尋、不同熟度、重整保留、桌號、備註與完整送單', async ({ page }) => {
   const errors = []; page.on('pageerror', e => errors.push(e.message));
   await page.goto('/');

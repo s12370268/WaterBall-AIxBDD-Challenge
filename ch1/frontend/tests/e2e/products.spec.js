@@ -1,11 +1,6 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, login } from './fixtures.js';
 import { readFile } from 'node:fs/promises';
-async function login(page) {
-  await page.goto('/admin/#products');
-  await page.locator('#email').fill('admin@mori.demo'); await page.locator('#password').fill('Mori2026!');
-  await page.getByRole('button', { name: '登入管理室', exact: true }).click();
-  await expect(page.locator('#products-content')).toBeVisible();
-}
+import { menu } from '../../src/menu.js';
 async function fillProduct(page, name = '測試料理') {
   await page.locator('#product-name').fill(name);
   await page.locator('#product-description').fill('新鮮食材與主廚的心意。');
@@ -63,18 +58,21 @@ test('其他分頁更新時避免覆寫舊編輯，工作階段到期關閉商�
   await page.getByRole('button', { name: '編輯炭烤美國肋眼牛排', exact: true }).click();
   const other = await context.newPage(); await login(other);
   await other.getByRole('switch', { name: '炭烤美國肋眼牛排的菜單呈現', exact: true }).click();
+  await expect(other.getByRole('switch', { name: '炭烤美國肋眼牛排的菜單呈現', exact: true })).toHaveAttribute('aria-checked', 'false');
   await page.locator('#product-price').fill('1200');
   await page.locator('#save-product').click();
   await expect(page.locator('#product-form-error')).toContainText('其他分頁變更');
-  await page.evaluate(() => { const value = JSON.parse(sessionStorage.getItem('mori-admin-demo-session')); value.expiresAt = Date.now() - 1; sessionStorage.setItem('mori-admin-demo-session', JSON.stringify(value)); });
+  await page.context().clearCookies();
   await page.reload();
   await expect(page.locator('#dashboard-view')).toBeHidden();
   await expect(page.locator('#product-dialog')).not.toBeVisible();
 });
 
-test('空菜單不恢復示意商品，損壞儲存不被管理操作覆寫', async ({ page }) => {
+test('空菜單由後端保存，損壞的舊瀏覽器資料不影響伺服器', async ({ page, request }) => {
   await login(page);
-  await page.evaluate(() => localStorage.setItem('mori-catalog-v1', JSON.stringify({ version: 1, items: [] })));
+  const session = await (await request.post('/api/auth/login', { headers: { 'X-Mori-Client': 'web' }, data: { email: 'admin@mori.demo', password: 'Mori2026!' } })).json();
+  const catalog = await (await request.get('/api/products')).json();
+  await request.put('/api/products', { headers: { 'X-CSRF-Token': session.csrfToken }, data: { items: [], revision: catalog.revision } });
   await page.reload();
   await expect(page.locator('.products-empty')).toBeVisible();
   await page.goto('/');
@@ -82,8 +80,9 @@ test('空菜單不恢復示意商品，損壞儲存不被管理操作覆寫', as
   await page.goto('/admin/#products');
   await page.evaluate(() => localStorage.setItem('mori-catalog-v1', '{broken'));
   await page.reload();
+  await expect(page.locator('.products-empty')).toBeVisible();
+  await page.locator('#legacy-import').click();
   await expect(page.locator('#catalog-error')).toContainText('商品資料無法讀取');
-  await page.locator('#add-product').click();
   await expect(page.locator('#product-dialog')).not.toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('mori-catalog-v1'))).toBe('{broken');
 });
@@ -103,7 +102,7 @@ test('商品驗證：必填、負數、非整數、不合法及過大圖片、�
   await page.locator('#product-price').fill('1.5'); await page.locator('#save-product').click();
   await expect(page.locator('#product-form-error')).toContainText('整數價格');
   await page.locator('#product-price').fill('250');
-  await page.evaluate(() => { const original = Storage.prototype.setItem; Storage.prototype.setItem = function(key, value) { if (key === 'mori-catalog-v1') throw new DOMException('Quota', 'QuotaExceededError'); return original.call(this, key, value); }; });
+  await page.route('**/api/products', route => route.request().method() === 'PUT' ? route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: '儲存失敗，後端暫時無法使用。' }) }) : route.continue());
   await page.locator('#save-product').click();
   await expect(page.locator('#product-form-error')).toContainText('儲存失敗');
   await expect(page.locator('.product-row')).toHaveCount(9);
@@ -126,4 +125,18 @@ test('手機商品管理：搜尋、照片替換與隱藏設定，無橫向溢�
   await page.screenshot({ path: 'artifacts/product-editor-mobile.png', fullPage: true });
   await page.locator('#save-product').click();
   await expect(page.getByRole('switch', { name: '炭烤美國肋眼牛排的菜單呈現', exact: true })).toHaveAttribute('aria-checked', 'false');
+});
+
+test('管理員明確確認後匯入舊瀏覽器商品，其他瀏覽器可讀取', async ({ page, browser }) => {
+  await login(page);
+  const legacy = menu.map((item, i) => ({ ...item, visible: true, ...(i === 0 ? { name: '原瀏覽器的料理', price: 777 } : {}) }));
+  await page.evaluate(items => localStorage.setItem('mori-catalog-v1', JSON.stringify({ version: 1, items })), legacy);
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#legacy-import').click();
+  await expect(page.locator('#product-feedback')).toContainText('已匯入 Python 後端');
+  expect(await page.evaluate(() => localStorage.getItem('mori-catalog-v1'))).toContain('原瀏覽器的料理');
+  const other = await browser.newContext(); const customer = await other.newPage();
+  await customer.goto('http://127.0.0.1:5174/');
+  await expect(customer.locator('.dish-card').filter({ hasText: '原瀏覽器的料理' })).toContainText('777');
+  await other.close();
 });

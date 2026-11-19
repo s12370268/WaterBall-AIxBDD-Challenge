@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 test('目錄整理後：HTML、模組、樣式與照片可讀取，工具及後端目錄不公開', async ({ request }) => {
   for (const path of ['/', '/admin/', '/src/app.js', '/src/catalog.js', '/src/admin/admin.js', '/src/styles.css', '/src/admin/admin.css', '/assets/hero.jpg']) {

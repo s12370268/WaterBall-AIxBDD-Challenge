@@ -7,6 +7,8 @@
   "scripts": {
     "dev": "npm run dev --workspace @mori/frontend",
     "start": "npm run start --workspace @mori/frontend",
+    "dev:backend": "node scripts/backend.mjs",
+    "test:backend": "node scripts/backend.mjs --test",
     "test": "npm run test --workspace @mori/frontend",
     "build": "npm run build --workspace @mori/frontend",
     "test:e2e": "npm run test:e2e --workspace @mori/frontend",

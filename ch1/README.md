@@ -1,15 +1,22 @@
-# 森暮 MORI Bistro｜餐酒館前端
+# 森暮 MORI Bistro｜餐酒館點餐與管理系統
 
 深綠與奶油白風格的餐酒館菜單與點餐介面，支援桌面與手機。提供分類搜尋、餐點選項、購物車、桌號與模擬送單。
 
 ```sh
 npm install
+uv sync --project backend
+npm run dev:backend
+```
+
+另開終端執行前端：
+
+```sh
 npm run dev
 ```
 
-開啟 http://localhost:5173 。完整開發說明、驗證方式與設計紀錄請參閱 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)。目前為純前端，送單不會傳至餐廳。
+開啟 http://localhost:5173 。完整開發說明、驗證方式與設計紀錄請參閱 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)。登入、權限與商品已使用 Python API；點餐送單目前仍為模擬，不會傳至廚房。
 
-後台入口：http://localhost:5173/admin/ 。示範帳號 `admin@mori.demo`，密碼 `Mori2026!`。登入後可進入「商品管理」，新增、編輯、刪除商品，上傳照片並設定價格、描述與前台顯示狀態。資料保存在目前瀏覽器，同一瀏覽器的前台會同步更新，不會同步到其他裝置。
+後台入口：http://localhost:5173/admin/ 。本機管理員 `admin@mori.demo`／`Mori2026!`，員工 `staff@mori.demo`／`Staff2026!`。員工可新增、編輯商品；管理員另可刪除商品及管理帳號／角色。商品與照片保存於 SQLite，前台共用後端菜單；舊瀏覽器商品可由管理員手動匯入。詳見 [後端說明](backend/README.md)。
 
 ---
 
@@ -36,8 +43,12 @@ ch1/
 │  ├─ tests/e2e/            # 瀏覽器流程測試
 │  ├─ package.json          # 前端指令與開發依賴
 │  └─ dist/                 # 建置產物（自動產生，勿直接編輯）
-├─ backend/                 # 未來 API 後端預留，目前尚未實作
-│  └─ src/
+├─ backend/                 # Python Flask API 與 SQLite
+│  ├─ src/                  # 登入、商品、帳號與角色驗證
+│  ├─ tests/                # 後端權限與資料測試
+│  ├─ pyproject.toml        # Python 依賴
+│  └─ run.py                # 後端入口
+├─ scripts/                 # 根目錄 Python 啟動／測試工具
 ├─ docs/                    # 開發說明與設計紀錄
 ├─ .agents/skills/          # 開發 skills，保留既有固定路徑
 └─ package.json             # 根目錄統一指令與 npm workspace
@@ -45,7 +56,7 @@ ch1/
 
 從根目錄執行 `npm run dev`、`npm test`、`npm run test:e2e`、`npm run build`；也可在 `frontend/` 內執行相同指令。瀏覽器測試會自動啟動獨立測試伺服器。部署靜態網站時使用 `frontend/dist/`。請修改 `frontend/src/` 與 HTML 入口，再重新建置。
 
-後台管理介面屬於前端；未來真正處理登入、商品儲存與訂單的 API 才會放進 `backend/`，詳見 [backend/README.md](backend/README.md)。
+後台管理介面屬於前端；帳密驗證、權限、商品與照片保存由 Python 後端處理。`npm run test:backend` 驗證後端；部署前端建置產物時須另外部署 Python API，並將 `/api/` 反向代理至後端。
 
 | 路徑 | 內容 |
 |---|---|

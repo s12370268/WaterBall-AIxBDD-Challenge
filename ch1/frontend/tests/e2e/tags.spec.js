@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 
 test('後台標籤：既有值帶入、自訂、新商品、清空與前台同步', async ({ page, context }) => {
   await page.goto('/admin/#products');

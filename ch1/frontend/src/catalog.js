@@ -1,5 +1,16 @@
 import { menu, categories } from './menu.js';
+import { api } from './api.js';
 export const CATALOG_KEY = 'mori-catalog-v1';
+export const CATALOG_SIGNAL_KEY = 'mori-catalog-revision';
+let revision = 0;
+export async function fetchProducts() { const data = await api('/products'); revision = data.revision; return data.items; }
+export async function fetchMenu() { return (await api('/menu')).items; }
+export async function saveProducts(items) {
+  const data = await api('/products', { method: 'PUT', body: { items, revision } });
+  revision = data.revision;
+  try { localStorage.setItem(CATALOG_SIGNAL_KEY, String(revision)); } catch {}
+  return data.items;
+}
 export const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 export const imageSource = (item, prefix = '') => item.image.startsWith('data:image/') ? item.image : `${prefix}assets/${item.image}.jpg`;
 export function validateProduct(item) {
