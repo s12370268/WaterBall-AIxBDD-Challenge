@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#243e33"><meta name="robots" content="noindex,nofollow">
+  <title>森暮管理室｜MORI Bistro</title>
+  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <main id="login-view" class="login-layout">
+    <section class="brand-story" aria-label="森暮品牌">
+      <a class="brand brand-light" href="../"><img src="../assets/logo.svg" width="44" height="44" alt=""><span>MORI<small>森 暮 餐 酒 館</small></span></a>
+      <div class="story-copy"><span class="eyebrow">BEHIND EVERY GOOD MOMENT</span><h1>美好款待，<br>從這裡開始。</h1><p>讓每一道用心，<br>都成為客人餐桌上的好風景。</p><div class="story-line"></div><span class="story-signature">A little care. A little MORI.</span></div>
+      <p class="story-footer">好食・微醺・慢生活</p>
+    </section>
+    <section class="login-content" aria-labelledby="login-heading">
+      <a href="../" class="back-link">回到前台菜單</a>
+      <div class="login-card">
+        <span class="eyebrow">MORI MANAGEMENT</span><h2 id="login-heading">歡迎回到森暮。</h2><p class="intro">登入管理室，照顧每一份美好的日常。</p>
+        <form id="login-form" novalidate>
+          <label for="email">管理員帳號</label><input id="email" name="email" type="email" autocomplete="username" inputmode="email" placeholder="請輸入電子郵件" required maxlength="254" aria-describedby="email-error"><p id="email-error" class="field-error" hidden></p>
+          <label for="password">密碼</label><div class="password-field"><input id="password" name="password" type="password" autocomplete="current-password" placeholder="請輸入密碼" required maxlength="128" aria-describedby="password-error caps-lock"><button id="toggle-password" type="button" aria-label="顯示密碼" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></div><p id="password-error" class="field-error" hidden></p><p id="caps-lock" class="field-hint" hidden>大寫鎖定已開啟</p>
+          <div id="login-error" class="form-error" role="alert" hidden></div>
+          <button id="login-button" class="primary-button" type="submit">登入管理室</button>
+        </form>
+        <div class="demo-box"><span class="demo-label">前端體驗版</span><p>使用以下示範帳密體驗登入流程。</p><dl><div><dt>帳號</dt><dd>admin@mori.demo</dd></div><div><dt>密碼</dt><dd>Mori2026!</dd></div></dl><p class="demo-disclaimer">此為模擬登入，尚未串接真實帳號驗證。</p></div>
+      </div>
+      <p class="login-footer">© 2026 MORI Bistro · 用心料理，也用心管理。</p>
+    </section>
+  </main>
+  <div id="dashboard-view" class="dashboard-layout" hidden>
+    <aside class="sidebar"><a class="brand" href="./"><img src="../assets/logo.svg" width="36" height="36" alt=""><span>MORI<small>森 暮 管 理 室</small></span></a><p class="sidebar-label">WORKSPACE</p><nav aria-label="後台導覽"><a href="#overview" aria-current="page"><span aria-hidden="true">▦</span>管理首頁</a><div class="upcoming-nav"><span aria-hidden="true">☷</span>商品管理 <small>即將開放</small></div></nav><div class="sidebar-bottom"><p>把心意留給料理，<br>把日常交給森暮。</p><a href="../">查看前台菜單</a></div></aside>
+    <div class="workspace"><header class="workspace-header"><span>森暮管理室 <span class="header-divider">/</span> 管理首頁</span><div class="account"><span class="avatar" aria-hidden="true">M</span><span>森暮管理員</span><button id="logout-button" type="button">登出</button></div></header>
+      <main class="dashboard-main" id="overview" tabindex="-1"><div class="dashboard-title"><div><span class="eyebrow">A GOOD DAY STARTS HERE</span><h1>歡迎回來，森暮管理員。</h1><p>每一份用心，都從好好管理開始。</p></div><span class="workspace-badge">管理室</span></div>
+        <section class="welcome-card"><div><span class="eyebrow">YOUR MORI, AT A GLANCE</span><h2>為美好的餐桌，<br>準備好每一個細節。</h2><p>管理室已就緒。先看看目前的菜單，<br>下一步，讓料理的故事更加豐富。</p><a href="../" class="light-button">瀏覽前台菜單</a></div><img src="../assets/hero.jpg" alt="森暮餐桌上的精緻料理"></section>
+        <section class="stats" aria-label="菜單概況"><article><span>目前餐點</span><strong id="dish-count">—</strong><small>道示意料理與飲品</small></article><article><span>菜單分類</span><strong id="category-count">—</strong><small>個料理與飲品分類</small></article><article class="status-card"><span>目前開放功能</span><strong>帳號登入</strong><small>商品新增與刪除尚未開放</small></article></section>
+        <section class="next-step"><span class="next-icon" aria-hidden="true">♧</span><div><h2>從登入，開啟管理的第一步。</h2><p>本階段提供登入與登出。商品管理將於後續開放，屆時可在此新增或移除菜單商品。</p></div><span class="soon-tag">下一階段</span></section>
+        <p class="dashboard-note">前端體驗版：登入狀態僅保留於目前分頁，這裡尚未提供正式身分驗證或商品管理功能。</p>
+      </main><footer class="workspace-footer">© 2026 MORI Bistro <span>好食・微醺・慢生活</span></footer>
+    </div>
+  </div>
+  <noscript><p class="noscript-message">請啟用 JavaScript 以使用森暮管理室登入功能。</p></noscript>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

@@ -9,6 +9,8 @@ npm run dev
 
 開啟 http://localhost:5173 。完整開發說明、驗證方式與設計紀錄請參閱 [DEVELOPMENT.md](DEVELOPMENT.md)。目前為純前端，送單不會傳至餐廳。
 
+後台入口：http://localhost:5173/admin/ 。示範帳號 `admin@mori.demo`，密碼 `Mori2026!`。目前提供純前端模擬登入、管理首頁與登出；商品新增、刪除留待後續開發。
+
 ---
 
 > 用這份 README 當範例，改成你自己的版本。repo 名稱請當成自己的作品集來命名。各節都可以改寫或刪除，只有文末的官方區塊要保留。
