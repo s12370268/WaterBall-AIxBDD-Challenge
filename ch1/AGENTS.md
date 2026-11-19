@@ -15,3 +15,23 @@
 - 驗證失敗時先修正；無法完成時回報原因，不將未完成工作宣稱為已驗證。
 - 完成後回報 commit hash 與提交訊息；沒有變更時不建立空 commit。
 - 不執行 git push。部署須有使用者另外明確授權。
+
+## Skill Usage Reporting
+
+Before starting a task:
+- Identify which available skills are relevant.
+- Use relevant skills according to their triggering rules.
+- Do not invoke unrelated skills.
+
+When reporting progress or results:
+- List the skills actually invoked.
+- Explain briefly why each skill was used.
+- If no skill was invoked, explicitly state "None".
+- Never claim a skill was used unless it was actually loaded.
+
+At task completion, include:
+
+### Skill Usage
+- Invoked Skills: [names or None]
+- Purpose: [brief explanation]
+- Validation: [checks performed and results]
