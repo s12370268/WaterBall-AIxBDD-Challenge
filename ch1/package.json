@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "workspaces": ["frontend"],
   "scripts": {
-    "dev": "node server.mjs",
-    "start": "node server.mjs",
-    "test": "node --test --experimental-test-isolation=none tests/*.test.js",
-    "build": "node build.mjs",
-    "test:e2e": "playwright test"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.65.1"
+    "dev": "npm run dev --workspace @mori/frontend",
+    "start": "npm run start --workspace @mori/frontend",
+    "test": "npm run test --workspace @mori/frontend",
+    "build": "npm run build --workspace @mori/frontend",
+    "test:e2e": "npm run test:e2e --workspace @mori/frontend",
+    "screenshot": "npm run screenshot --workspace @mori/frontend"
   }
 }

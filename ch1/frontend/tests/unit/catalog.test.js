@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CATALOG_KEY, readCatalog, saveCatalog, validateProduct, syncCart, escapeHtml } from '../catalog.js';
+import { CATALOG_KEY, readCatalog, saveCatalog, validateProduct, syncCart, escapeHtml } from '../../src/catalog.js';
 const makeStorage = () => { const data = new Map(); return { getItem: key => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) }; };
 test('商品新增修改、隱藏與刪除持久保存，刪光後不恢復示意商品', () => {
   const storage = makeStorage(), items = readCatalog(storage);

@@ -37,7 +37,7 @@ test('後台標籤：既有值帶入、自訂、新商品、清空與前台同�
   await page.locator('#product-price').fill('180');
   await page.locator('#product-description').fill('每日手作的甜蜜滋味。');
   await page.locator('#product-tag').fill('人氣必點');
-  await page.locator('#product-photo').setInputFiles('assets/tiramisu.jpg');
+  await page.locator('#product-photo').setInputFiles('public/assets/tiramisu.jpg');
   await expect(page.locator('#save-product')).toBeEnabled();
   await page.locator('#save-product').click();
   const newCard = customer.locator('.dish-card').filter({ hasText: '限定甜點' });

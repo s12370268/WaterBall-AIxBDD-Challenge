@@ -4,7 +4,7 @@
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#203b31"><meta name="description" content="森暮 MORI Bistro，以好食與美酒，收藏日常裡的美好。瀏覽菜單，開啟你的餐酒時光。">
   <title>森暮 MORI Bistro｜好食・微醺・慢生活</title>
-  <link rel="icon" href="assets/logo.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml"><link rel="stylesheet" href="src/styles.css">
 </head>
 <body>
   <header class="header"><a href="#" class="brand" aria-label="森暮首頁"><img src="assets/logo.svg" alt="" width="43" height="43"><span>MORI<span class="brand-sub">森 暮 餐 酒 館</span></span></a><nav aria-label="主要導覽"><a class="nav-active" href="#menu">探索菜單</a><button id="about-button">關於森暮 <span>↗</span></button></nav><button id="table-button" class="table-pill"><span class="green-dot"></span>桌號 <strong id="table-label">08</strong><span class="edit-mark">⌄</span></button></header>
@@ -26,5 +26,5 @@
   <dialog id="about-dialog" class="small-dialog"><button class="dialog-close icon-button" data-close aria-label="關閉">×</button><span class="eyebrow">A LITTLE BIT OF MORI</span><h2>森，是相聚。<br>暮，是剛好的時光。</h2><p>我們相信，美好不一定盛大。當新鮮食材遇上用心料理，當一杯好酒遇見對的人，日常就有了值得收藏的片刻。</p><p>這裡是森暮，留一個位置給慢下來的你。</p><small>此為示意餐酒館前端作品。飲酒過量，有害健康；未滿十八歲禁止飲酒。</small></dialog>
   <dialog id="review-dialog" class="small-dialog"><button class="dialog-close icon-button" data-close aria-label="關閉">×</button><span class="eyebrow">ONE LAST LOOK</span><h2>美味，即將開始。</h2><p id="review-table"></p><div id="review-items" class="review-items"></div><p id="review-note"></p><div class="review-total"><span>含服務費合計</span><strong id="review-total"></strong></div><p class="demo-note">此為前端模擬，餐廳不會收到訂單。</p><button class="primary-button" id="confirm-order">確認模擬送單 ↗</button></dialog>
   <dialog id="success-dialog" class="small-dialog success-dialog"><span class="success-icon">✓</span><span class="eyebrow">THANK YOU & ENJOY</span><h2>今晚的美好，已安排。</h2><p>模擬訂單已建立！<br>這是前端展示，未送至餐廳。</p><p class="receipt-id" id="receipt-id"></p><p id="receipt-details"></p><button class="primary-button" data-close>繼續探索菜單 →</button></dialog>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div><script type="module" src="app.js"></script>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div><script type="module" src="src/app.js"></script>
 </body></html>

@@ -11,7 +11,7 @@ async function fillProduct(page, name = '測試料理') {
   await page.locator('#product-description').fill('新鮮食材與主廚的心意。');
   await page.locator('#product-price').fill('250');
   await page.locator('#product-category').selectOption('starter');
-  await page.locator('#product-photo').setInputFiles('assets/salmon.jpg');
+  await page.locator('#product-photo').setInputFiles('public/assets/salmon.jpg');
   await expect(page.locator('#product-photo-preview')).toBeVisible();
   await expect(page.locator('#save-product')).toBeEnabled();
 }
@@ -120,7 +120,7 @@ test('手機商品管理：搜尋、照片替換與隱藏設定，無橫向溢�
   await page.screenshot({ path: 'artifacts/products-mobile.png', fullPage: true });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole('button', { name: '編輯炭烤美國肋眼牛排', exact: true }).click();
-  await page.locator('#product-photo').setInputFiles({ name: 'replacement.png', mimeType: 'image/png', buffer: await readFile('assets/steak.jpg') });
+  await page.locator('#product-photo').setInputFiles({ name: 'replacement.png', mimeType: 'image/png', buffer: await readFile('public/assets/steak.jpg') });
   await expect(page.locator('#save-product')).toBeEnabled();
   await page.locator('#product-visible').uncheck();
   await page.screenshot({ path: 'artifacts/product-editor-mobile.png', fullPage: true });

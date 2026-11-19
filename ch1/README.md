@@ -7,7 +7,7 @@ npm install
 npm run dev
 ```
 
-開啟 http://localhost:5173 。完整開發說明、驗證方式與設計紀錄請參閱 [DEVELOPMENT.md](DEVELOPMENT.md)。目前為純前端，送單不會傳至餐廳。
+開啟 http://localhost:5173 。完整開發說明、驗證方式與設計紀錄請參閱 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)。目前為純前端，送單不會傳至餐廳。
 
 後台入口：http://localhost:5173/admin/ 。示範帳號 `admin@mori.demo`，密碼 `Mori2026!`。登入後可進入「商品管理」，新增、編輯、刪除商品，上傳照片並設定價格、描述與前台顯示狀態。資料保存在目前瀏覽器，同一瀏覽器的前台會同步更新，不會同步到其他裝置。
 
@@ -22,6 +22,30 @@ npm run dev
 <!-- 範例：我在這個 repo 整理了從撰寫規格到 TDD 實作的 skills，做法來自水球軟體學院《AI x BDD》課程，讓 AI 產出的程式碼能逐條對應回規格。 -->
 
 ## 結構說明
+
+```text
+ch1/
+├─ frontend/                # 瀏覽器介面（客人菜單＋管理員後台）
+│  ├─ index.html            # 客人菜單入口
+│  ├─ admin/index.html      # 後台管理入口
+│  ├─ src/                  # JavaScript、CSS 與示範資料
+│  │  └─ admin/             # 登入、商品管理與照片處理
+│  ├─ public/assets/        # 照片、Logo 等靜態資源
+│  ├─ scripts/              # 開發伺服器、建置、截圖工具
+│  ├─ tests/unit/           # 單元測試
+│  ├─ tests/e2e/            # 瀏覽器流程測試
+│  ├─ package.json          # 前端指令與開發依賴
+│  └─ dist/                 # 建置產物（自動產生，勿直接編輯）
+├─ backend/                 # 未來 API 後端預留，目前尚未實作
+│  └─ src/
+├─ docs/                    # 開發說明與設計紀錄
+├─ .agents/skills/          # 開發 skills，保留既有固定路徑
+└─ package.json             # 根目錄統一指令與 npm workspace
+```
+
+從根目錄執行 `npm run dev`、`npm test`、`npm run test:e2e`、`npm run build`；也可在 `frontend/` 內執行相同指令。瀏覽器測試會自動啟動獨立測試伺服器。部署靜態網站時使用 `frontend/dist/`。請修改 `frontend/src/` 與 HTML 入口，再重新建置。
+
+後台管理介面屬於前端；未來真正處理登入、商品儲存與訂單的 API 才會放進 `backend/`，詳見 [backend/README.md](backend/README.md)。
 
 | 路徑 | 內容 |
 |---|---|

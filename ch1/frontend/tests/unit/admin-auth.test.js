@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { validateLogin, createDemoSession, isValidDemoSession, SESSION_DURATION } from '../admin/auth.js';
+import { validateLogin, createDemoSession, isValidDemoSession, SESSION_DURATION } from '../../src/admin/auth.js';
 
 test('登入必填與格式檢查，密碼保留原始字元', () => {
   assert.deepEqual(Object.keys(validateLogin(' ', '')), ['email', 'password']);
