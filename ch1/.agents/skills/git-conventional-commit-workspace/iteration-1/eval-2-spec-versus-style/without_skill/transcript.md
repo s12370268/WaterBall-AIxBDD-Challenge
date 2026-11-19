@@ -1,0 +1,1 @@
+Used the evaluation 2 prompt read from evals/evals.json with UTF-8. Answered from general knowledge of Conventional Commits 1.0.0. Wrote outputs/answer.md. Did not run Git, browse, consult a skill or reference notes, or read with_skill outputs.

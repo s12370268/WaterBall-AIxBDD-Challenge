@@ -1,0 +1,41 @@
+{
+  "expectations": [
+    {
+      "text": "保留 6/8 完成、3 位證明文件困惑及電話瓶頸說法，未把小樣本推廣為普遍因果。",
+      "passed": true,
+      "evidence": "保留 8 人中 6 人完成、其中 3 人的文件困惑與第一線電話瓶頸說法，並明言未能推廣或推論因果。"
+    },
+    {
+      "text": "提出回到 Discover 或 Define 的具體理由，保留不同瓶頸的競爭解釋。",
+      "passed": true,
+      "evidence": "回 Discover／Define；區分文件不清、表單負擔與諮詢量能。"
+    },
+    {
+      "text": "安排兩天內可操作的行動與產物，沒有擴張成完整研究專案。",
+      "passed": true,
+      "evidence": "第一天回看卡點與電話紀錄，第二天共看三案並測低成本原型；兩天後記錄證據與取捨。"
+    },
+    {
+      "text": "測試包含至少兩個不同瓶頸的介入或比較方式及可觀察指標。",
+      "passed": true,
+      "evidence": "文件清單＋範例、表單提示、預約回電；觀察列對證明、完成任務、耗時及求助負擔。"
+    },
+    {
+      "text": "說明根據測試結果如何選擇下一步，並明確列出目前不能下的結論。",
+      "passed": true,
+      "evidence": "文件辨識改善且未增加負擔則保留；仍誤解則修改；卡在等待則回 Define；列出四項不能下的結論。"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "output_chars_without_whitespace": 469
+  },
+  "eval_feedback": {
+    "overall": "流程可用性檢查；樣本少，且由 skill 作者評閱，不是盲測。"
+  }
+}

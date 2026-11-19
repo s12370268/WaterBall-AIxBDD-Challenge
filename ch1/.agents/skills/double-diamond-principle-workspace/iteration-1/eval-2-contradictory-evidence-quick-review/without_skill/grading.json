@@ -1,0 +1,41 @@
+{
+  "expectations": [
+    {
+      "text": "保留 6/8 完成、3 位證明文件困惑及電話瓶頸說法，未把小樣本推廣為普遍因果。",
+      "passed": true,
+      "evidence": "保留 6/8 與證明困惑；先確認 3 位是否已完成；第一線說法先當線索。"
+    },
+    {
+      "text": "提出回到 Discover 或 Define 的具體理由，保留不同瓶頸的競爭解釋。",
+      "passed": true,
+      "evidence": "回到定義問題做小幅補查；表單長度、證明準備不清、電話等待三個假設並列。"
+    },
+    {
+      "text": "安排兩天內可操作的行動與產物，沒有擴張成完整研究專案。",
+      "passed": true,
+      "evidence": "第一天上午回看紀錄、下午製作版本；第二天做任務並檢查送件品質。"
+    },
+    {
+      "text": "測試包含至少兩個不同瓶頸的介入或比較方式及可觀察指標。",
+      "passed": true,
+      "evidence": "證明清單與範例、諮詢分流入口；記錄耗時、求助和補件。"
+    },
+    {
+      "text": "說明根據測試結果如何選擇下一步，並明確列出目前不能下的結論。",
+      "passed": false,
+      "evidence": "有列不能下的結論，也說當日決定保留、修正或撤回，但未交代哪些觀察結果分別導向哪個決策。"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "execution_metrics": {
+    "output_chars_without_whitespace": 406
+  },
+  "eval_feedback": {
+    "overall": "流程可用性檢查；樣本少，且由 skill 作者評閱，不是盲測。"
+  }
+}

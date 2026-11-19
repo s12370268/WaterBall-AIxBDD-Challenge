@@ -1,0 +1,38 @@
+{
+  "skill_name": "trunk-based-development",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我們八人團隊 main/develop 加兩週 feature branches，每天拉 develop，PR 等三天，CI 40 分鐘，每月發布。請判斷是否 TBD 並提出四週轉型計畫，不修改 repo。",
+      "expected_output": "具體方案；符合以下 assertions 並保留來源。",
+      "files": [],
+      "assertions": [
+        "判斷目前兩週功能分支與每天拉 develop 不符合每日回到共同主幹的整合。",
+        "提供四週分階段計畫，處理三天 review 等待及四十分鐘 CI 的瓶頸。",
+        "保留必要品質檢查，並區分每月發布與每日整合。"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "付款實作要花三週換供應商，還要把 customer_name 改成 given_name/family_name。舊新版服務可能並存，要每天合 main；請給可以逐步合併的切分、驗證與回退方案。",
+      "expected_output": "具體方案；符合以下 assertions 並保留來源。",
+      "files": [],
+      "assertions": [
+        "以抽象、新舊實作並存與逐步切換將三週付款重構拆成可每日合併的步驟。",
+        "姓名欄位變更採 expand/migrate/contract，處理舊新版並存及不可可靠拆姓名的情形。",
+        "說明付款副作用、驗證與資料回復限制，不把 flag 關閉當成撤回交易。"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "我們維護 release/1.8 與 1.9，main 已是 2.0。1.8 的帳務 bug 在 main 無法重現，主管說直接修 release 再整條 merge 回 main，且刪保護規則加速。請給緊急處理流程與理由，不執行 Git 寫入。",
+      "expected_output": "具體方案；符合以下 assertions 並保留來源。",
+      "files": [],
+      "assertions": [
+        "允許無法在 main 重現時先修受影響版本，並追蹤 main 適用性與回歸證據。",
+        "使用選擇性 backport 並分別判斷 1.9 是否受影響，避免整條 release merge 回 main。",
+        "保留分支保護及必要驗證，不執行 Git 寫入。"
+      ]
+    }
+  ]
+}

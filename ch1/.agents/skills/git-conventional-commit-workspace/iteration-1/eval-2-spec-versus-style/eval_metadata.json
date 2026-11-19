@@ -1,0 +1,10 @@
+{
+    "eval_id":  2,
+    "eval_name":  "spec-versus-style",
+    "prompt":  "檢查這三則是否符合 Conventional Commits 1.0.0，沒有專案設定可看：A `Feat(api): add search`；B `feat(api)!: remove the legacy search parameter`；C `fix: handle empty input\n\nbreaking change: input must now be a string`。請分清規範錯誤與風格建議，給需要修正者的最小修正版。B 有沒有一定要再加 BREAKING CHANGE footer？",
+    "assertions":  [
+                       "接受 A 的大寫 type 為核心規範相容，區分本地大小寫限制",
+                       "接受 B 單獨 !，不要求規範上必須同時有 footer",
+                       "指出 C 小寫 breaking token 無效並提供大寫最小修正"
+                   ]
+}

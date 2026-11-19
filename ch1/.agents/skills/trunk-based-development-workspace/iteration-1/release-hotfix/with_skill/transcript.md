@@ -1,0 +1,26 @@
+﻿# With-skill advisory run: release-hotfix
+
+## Prompt
+
+我們維護 release/1.8 與 1.9，main 已是 2.0。1.8 的帳務 bug 在 main 無法重現，主管說直接修 release 再整條 merge 回 main，且刪保護規則加速。請給緊急處理流程與理由，不執行 Git 寫入。
+
+## Actual process
+
+Read .agents/skills/trunk-based-development/SKILL.md; initial default-encoding output was garbled, then reread UTF-8. Read references/patterns.md, delivery.md and research.md using UTF-8. This source-loading step was shared across the three hypothetical cases in this worker. Generated this case independently from its prompt and skill sources; did not read baseline outputs or assertions, browse, inspect or modify real repository/settings, execute Git writes, grade, or spawn agents. Initial system-python write failed with exit 1/no output; native PowerShell write was denied by the read-only .agents sandbox. Requested escalation for output-directory creation, which was approved and succeeded, then requested escalation for this artifact write. Per-case timing and tokens were not measured.
+
+## Assistant response
+
+本案可先修 release/1.8：main 2.0 無法重現是例外，但需建立有 owner 的主幹適用性／forward-port 工作。不要整條 release merge 回 main，也不要刪保護規則。以下只提供流程，不執行 Git 寫入或設定變更。
+
+1. 指派事故負責人、1.8 修補 owner、reviewer 及 1.9／main 適用性 owner。先控制持續錯帳的入口或批次，保留交易、日誌與對帳證據，約定緊急驗收條件。程式修復不會自動修復既有帳務。
+2. 在 1.8 代表性環境重現，加修補前失敗的回歸測試。main 用等價輸入及相近配置檢查，記錄無法重現的證據與可能原因；不能將無法重現當作安全證明。建立有 owner、期限、退出條件的 main 適用性工單。
+3. 從 release/1.8 當前維護基線建立短命小 PR，只含 bug 修正及必要測試。保留審查、必要 CI、保護規則，以優先 reviewer、縮小範圍及暫停不相關變更加速。驗證與當前維護線整合後結果、帳務不變量、冪等重試及相關回歸；主線移動需重驗，不跳過紅燈。
+4. 分開檢查 1.9，不能由名稱推定受影響。若受影響，選擇性 cherry-pick/backport 最小修補；有差異則做等價適配，獨立 review 並跑該版本測試。若不受影響，記錄差異及測試證據，不機械套不相容 patch。
+5. 完成 main 適用性檢查：同類問題仍存在就以獨立小 PR forward-port 並加測試；若 2.0 架構已消除原因，記錄對應程式差異及測試證據，能表達同一不變量時補相應回歸。不能只為保持 commit 一致硬套 patch。
+6. 各維護線從通過驗證的 commit/tag 建立可追溯修補產物，記版本、patch、測試及核准。先小批發布，監看帳務差異、重複入帳、錯誤率及交易量；觀察達標再放大。1.8、1.9 驗證及發布紀錄分開保存。
+7. 預備已知良好產物及停止放量／回退門檻。若修補引入新問題，恢復相容產物或一般 revert、保留歷史；若舊版仍錯帳，先控制受影響功能再 fix-forward。資料與外部交易需可稽核的對帳、補償及核准，分批可重試並先演練，不能假設 rollback 程式能還原帳務。
+8. 收尾確認 1.9／main 適用性工作完成，或有 owner 及明確期限；記錄根因、版本覆蓋、受影響帳目及補償結果。維護線只收受控修補，按既有支援期限維護，不加新功能。
+
+正常預設是先在 main 重現、測試及修復，再選擇性 backport。本案無法重現可先修 1.8，仍須防止漏掉適用於 main 的修正。整條 release merge 容易帶入 2.0 不需要的舊版專屬變更；最小 patch 與適用性審查能控制範圍。刪保護規則會拿掉緊急帳務修補所需的驗證與可追溯性；加速應來自小修補、優先審查及可靠 CI。
+
+尚未讀取真實 repo、確認遠端規則或執行測試；上述驗證為執行時必要條件，並非已完成結果。

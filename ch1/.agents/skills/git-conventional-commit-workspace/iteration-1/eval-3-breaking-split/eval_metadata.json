@@ -1,0 +1,11 @@
+{
+    "eval_id":  3,
+    "eval_name":  "breaking-split",
+    "prompt":  "我想將三件事放一個 commit：把發布套件的最低 Node 支援從 18 提到 22、修正完全無關的 README 錯字，以及回復 abc1234 的快取變更。請建議怎麼拆，給繁體中文訊息草稿，並說明版本影響。沒有 release 設定、現有版號或 abc1234 的 diff，請不要自己操作 Git。",
+    "assertions":  [
+                       "建議依三個獨立目的拆分，提供繁體中文草稿",
+                       "最低 Node 18 改為 22 明確標記 breaking 並交代影響",
+                       "文件為 docs，revert 引用 abc1234 且不杜撰回復細節",
+                       "不保證未知版號、未知 release 設定或 revert 的發版效果"
+                   ]
+}

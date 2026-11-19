@@ -1,0 +1,10 @@
+{
+  "eval_id": 3,
+  "eval_name": "release-hotfix",
+  "prompt": "我們維護 release/1.8 與 1.9，main 已是 2.0。1.8 的帳務 bug 在 main 無法重現，主管說直接修 release 再整條 merge 回 main，且刪保護規則加速。請給緊急處理流程與理由，不執行 Git 寫入。",
+  "assertions": [
+    "允許無法在 main 重現時先修受影響版本，並追蹤 main 適用性與回歸證據。",
+    "使用選擇性 backport 並分別判斷 1.9 是否受影響，避免整條 release merge 回 main。",
+    "保留分支保護及必要驗證，不執行 Git 寫入。"
+  ]
+}

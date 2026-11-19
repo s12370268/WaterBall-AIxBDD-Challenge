@@ -1,0 +1,60 @@
+{
+  "expectations": [
+    {
+      "text": "接受 A 的大寫 type 為核心規範相容，區分本地大小寫限制",
+      "passed": true,
+      "evidence": "outputs/answer.md: The answer accepts Feat, describes lowercase feat as style, and explicitly declines to call uppercase a specification violation without local configuration."
+    },
+    {
+      "text": "接受 B 單獨 !，不要求規範上必須同時有 footer",
+      "passed": true,
+      "evidence": "outputs/answer.md: The answer accepts B and says ! already marks a breaking change, so an additional BREAKING CHANGE footer is not mandatory."
+    },
+    {
+      "text": "指出 C 小寫 breaking token 無效並提供大寫最小修正",
+      "passed": true,
+      "evidence": "outputs/answer.md: The answer distinguishes the valid general message from its invalid lowercase breaking marker, then supplies the original header with BREAKING CHANGE: input must now be a string."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1
+  },
+  "claims": [
+    {
+      "claim": "The drafted messages and explanations match the supplied scenario.",
+      "type": "quality",
+      "verified": true,
+      "evidence": "Compared the complete answer.md with eval_metadata.json; substantive matches are cited per expectation."
+    },
+    {
+      "claim": "No Git was executed and the run used only declared sources.",
+      "type": "process",
+      "verified": false,
+      "evidence": "transcript.md reports this, but no raw tool log is provided. It cannot be independently audited; no assertion requires trace-based proof."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [
+      "Process claims are supported only by executor narrative summaries."
+    ],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "Both configurations pass all content assertions. These three short, fully described scenarios do not establish incremental skill value or behavior on actual repositories."
+      },
+      {
+        "reason": "The transcripts are retrospective narrative summaries, not raw tool logs. Capture actual tool traces before treating no-Git execution, source isolation, or skill-reading claims as independently verified."
+      },
+      {
+        "reason": "The three examples mirror the skill reference diagnostic table. Add unseen combinations and real project rules conflicting with core syntax to test transfer and precedence."
+      }
+    ],
+    "overall": "All content assertions are substantively satisfied. This small, closely prompted evaluation does not discriminate between configurations and is not a robust benchmark."
+  }
+}

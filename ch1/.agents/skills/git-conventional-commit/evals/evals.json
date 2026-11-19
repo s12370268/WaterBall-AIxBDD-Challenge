@@ -1,0 +1,45 @@
+{
+    "skill_name":  "git-conventional-commit",
+    "evals":  [
+                  {
+                      "id":  1,
+                      "prompt":  "請只根據以下 staged 摘要給我 commit message，不要執行 git：結帳 API 原本在同一 idempotency key 重試時會重複建立訂單，現在回傳既有訂單，並加了回歸測試。另有尚未 staged 的 README 錯字修正。專案慣例英文、小寫 type，scope 使用 checkout。只給訊息。",
+                      "expected_output":  "英文 fix(checkout) 描述防止重複訂單；不含未暫存文件、虛構 issue 或執行命令。",
+                      "files":  [
+
+                                ],
+                      "expectations":  [
+                                           "使用英文 fix(checkout) 表達防止重複訂單",
+                                           "只包含 staged 結帳修正及必要測試，不混入 README",
+                                           "不捏造 issue、SHA 或已通過的測試結果"
+                                       ]
+                  },
+                  {
+                      "id":  2,
+                      "prompt":  "檢查這三則是否符合 Conventional Commits 1.0.0，沒有專案設定可看：A `Feat(api): add search`；B `feat(api)!: remove the legacy search parameter`；C `fix: handle empty input\n\nbreaking change: input must now be a string`。請分清規範錯誤與風格建議，給需要修正者的最小修正版。B 有沒有一定要再加 BREAKING CHANGE footer？",
+                      "expected_output":  "接受 A 大小寫與 B 單獨 !；指出 C 小寫 breaking token 無法標記，提供大寫 footer 最小修正。",
+                      "files":  [
+
+                                ],
+                      "expectations":  [
+                                           "接受 A 的大寫 type 為核心規範相容，區分本地大小寫限制",
+                                           "接受 B 單獨 !，不要求規範上必須同時有 footer",
+                                           "指出 C 小寫 breaking token 無效並提供大寫最小修正"
+                                       ]
+                  },
+                  {
+                      "id":  3,
+                      "prompt":  "我想將三件事放一個 commit：把發布套件的最低 Node 支援從 18 提到 22、修正完全無關的 README 錯字，以及回復 abc1234 的快取變更。請建議怎麼拆，給繁體中文訊息草稿，並說明版本影響。沒有 release 設定、現有版號或 abc1234 的 diff，請不要自己操作 Git。",
+                      "expected_output":  "建議按三個目的拆分，runtime 支援變更標為 breaking，文件用 docs，revert 引用已知 SHA；不杜撰回復內容或保證實際版號。",
+                      "files":  [
+
+                                ],
+                      "expectations":  [
+                                           "建議依三個獨立目的拆分，提供繁體中文草稿",
+                                           "最低 Node 18 改為 22 明確標記 breaking 並交代影響",
+                                           "文件為 docs，revert 引用 abc1234 且不杜撰回復細節",
+                                           "不保證未知版號、未知 release 設定或 revert 的發版效果"
+                                       ]
+                  }
+              ]
+}

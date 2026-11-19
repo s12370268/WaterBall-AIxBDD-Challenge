@@ -1,0 +1,7 @@
+{
+  "started_at": "2026-11-18T07:55:17Z",
+  "finished_at": "2026-11-18T07:57:02Z",
+  "total_duration_seconds": 105,
+  "total_tokens": null,
+  "timing_scope": "Response drafting, apply_patch write, and character-count verification; excludes shared initial reads and execution-artifact creation."
+}

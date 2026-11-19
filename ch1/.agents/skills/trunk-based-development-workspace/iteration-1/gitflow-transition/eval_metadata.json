@@ -1,0 +1,10 @@
+{
+  "eval_id": 1,
+  "eval_name": "gitflow-transition",
+  "prompt": "我們八人團隊 main/develop 加兩週 feature branches，每天拉 develop，PR 等三天，CI 40 分鐘，每月發布。請判斷是否 TBD 並提出四週轉型計畫，不修改 repo。",
+  "assertions": [
+    "判斷目前兩週功能分支與每天拉 develop 不符合每日回到共同主幹的整合。",
+    "提供四週分階段計畫，處理三天 review 等待及四十分鐘 CI 的瓶頸。",
+    "保留必要品質檢查，並區分每月發布與每日整合。"
+  ]
+}

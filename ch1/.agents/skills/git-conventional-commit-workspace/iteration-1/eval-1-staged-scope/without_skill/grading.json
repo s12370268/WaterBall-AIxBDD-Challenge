@@ -1,0 +1,60 @@
+{
+  "expectations": [
+    {
+      "text": "使用英文 fix(checkout) 表達防止重複訂單",
+      "passed": true,
+      "evidence": "outputs/answer.md: The English header \"fix(checkout): prevent duplicate orders on idempotent retries\" directly describes the supplied checkout fix."
+    },
+    {
+      "text": "只包含 staged 結帳修正及必要測試，不混入 README",
+      "passed": true,
+      "evidence": "outputs/answer.md: The complete answer is a single checkout retry fix subject; no README or unrelated change appears. No requirement obliges the concise subject to enumerate its regression test."
+    },
+    {
+      "text": "不捏造 issue、SHA 或已通過的測試結果",
+      "passed": true,
+      "evidence": "outputs/answer.md: The complete answer contains no issue ID, SHA, or test execution/result claim."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1
+  },
+  "claims": [
+    {
+      "claim": "The drafted messages and explanations match the supplied scenario.",
+      "type": "quality",
+      "verified": true,
+      "evidence": "Compared the complete answer.md with eval_metadata.json; substantive matches are cited per expectation."
+    },
+    {
+      "claim": "No Git was executed and the run used only declared sources.",
+      "type": "process",
+      "verified": false,
+      "evidence": "transcript.md reports this, but no raw tool log is provided. It cannot be independently audited; no assertion requires trace-based proof."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": [
+      "Process claims are supported only by executor narrative summaries."
+    ],
+    "needs_review": [],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "reason": "Both configurations pass all content assertions. These three short, fully described scenarios do not establish incremental skill value or behavior on actual repositories."
+      },
+      {
+        "reason": "The transcripts are retrospective narrative summaries, not raw tool logs. Capture actual tool traces before treating no-Git execution, source isolation, or skill-reading claims as independently verified."
+      },
+      {
+        "reason": "The prompt explicitly supplies staged scope and type/scope. Add real staged/unstaged hunks and check exact existing-order behavior to test evidence selection rather than restating the prompt."
+      }
+    ],
+    "overall": "All content assertions are substantively satisfied. This small, closely prompted evaluation does not discriminate between configurations and is not a robust benchmark."
+  }
+}

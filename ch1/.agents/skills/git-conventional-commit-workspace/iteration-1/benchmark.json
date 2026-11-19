@@ -1,0 +1,224 @@
+{
+  "metadata": {
+    "skill_name": "conventional-commits",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "staged-scope",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1
+      },
+      "expectations": [
+        {
+          "text": "使用英文 fix(checkout) 表達防止重複訂單",
+          "passed": true,
+          "evidence": "outputs/answer.md: The English header \"fix(checkout): return the existing order on idempotent retries\" accurately addresses duplicate creation by returning the existing order."
+        },
+        {
+          "text": "只包含 staged 結帳修正及必要測試，不混入 README",
+          "passed": true,
+          "evidence": "outputs/answer.md: The complete answer contains only the checkout retry fix, with no README or unrelated changes. Regression-test enumeration is optional in this concise subject."
+        },
+        {
+          "text": "不捏造 issue、SHA 或已通過的測試結果",
+          "passed": true,
+          "evidence": "outputs/answer.md: The complete answer contains no issue ID, SHA, or claim that tests passed."
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "staged-scope",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1
+      },
+      "expectations": [
+        {
+          "text": "使用英文 fix(checkout) 表達防止重複訂單",
+          "passed": true,
+          "evidence": "outputs/answer.md: The English header \"fix(checkout): prevent duplicate orders on idempotent retries\" directly describes the supplied checkout fix."
+        },
+        {
+          "text": "只包含 staged 結帳修正及必要測試，不混入 README",
+          "passed": true,
+          "evidence": "outputs/answer.md: The complete answer is a single checkout retry fix subject; no README or unrelated change appears. No requirement obliges the concise subject to enumerate its regression test."
+        },
+        {
+          "text": "不捏造 issue、SHA 或已通過的測試結果",
+          "passed": true,
+          "evidence": "outputs/answer.md: The complete answer contains no issue ID, SHA, or test execution/result claim."
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "spec-versus-style",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1
+      },
+      "expectations": [
+        {
+          "text": "接受 A 的大寫 type 為核心規範相容，區分本地大小寫限制",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer explicitly accepts A as core-compatible and explains that lowercase feat can be a team style recommendation; uppercase Feat is not itself a core error."
+        },
+        {
+          "text": "接受 B 單獨 !，不要求規範上必須同時有 footer",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer says ! already marks the breaking change and an additional BREAKING CHANGE footer is optional, correctly accepting B."
+        },
+        {
+          "text": "指出 C 小寫 breaking token 無效並提供大寫最小修正",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer explains that lowercase breaking change: may be ordinary body text but is not a breaking token; the minimal code block changes only that token to BREAKING CHANGE:."
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "spec-versus-style",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1
+      },
+      "expectations": [
+        {
+          "text": "接受 A 的大寫 type 為核心規範相容，區分本地大小寫限制",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer accepts Feat, describes lowercase feat as style, and explicitly declines to call uppercase a specification violation without local configuration."
+        },
+        {
+          "text": "接受 B 單獨 !，不要求規範上必須同時有 footer",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer accepts B and says ! already marks a breaking change, so an additional BREAKING CHANGE footer is not mandatory."
+        },
+        {
+          "text": "指出 C 小寫 breaking token 無效並提供大寫最小修正",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer distinguishes the valid general message from its invalid lowercase breaking marker, then supplies the original header with BREAKING CHANGE: input must now be a string."
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "breaking-split",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "pass_rate": 1
+      },
+      "expectations": [
+        {
+          "text": "建議依三個獨立目的拆分，提供繁體中文草稿",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer recommends three commits by independent purpose and supplies build!, docs, and revert drafts. Subjects and the Node impact explanation use Traditional Chinese; the conventional revert body remains English."
+        },
+        {
+          "text": "最低 Node 18 改為 22 明確標記 breaking 並交代影響",
+          "passed": true,
+          "evidence": "outputs/answer.md: The build! subject raises minimum Node support from 18 to 22; its BREAKING CHANGE footer explains that consumers must upgrade to Node 22 or a newer supported version."
+        },
+        {
+          "text": "文件為 docs，revert 引用 abc1234 且不杜撰回復細節",
+          "passed": true,
+          "evidence": "outputs/answer.md: The docs subject fixes README typos. The revert subject and body cite abc1234 and the supplied cache-change description; no implementation details are invented, and the missing diff is explicitly acknowledged."
+        },
+        {
+          "text": "不保證未知版號、未知 release 設定或 revert 的發版效果",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer limits major guidance to a stable public package and says actual release type/next version cannot be determined without settings/current version. Revert impact depends on the original diff, resulting behavior, and tooling."
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "breaking-split",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "pass_rate": 1
+      },
+      "expectations": [
+        {
+          "text": "建議依三個獨立目的拆分，提供繁體中文草稿",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer recommends three commits by independent purpose and supplies separate chore(runtime)!, docs, and revert drafts in Traditional Chinese."
+        },
+        {
+          "text": "最低 Node 18 改為 22 明確標記 breaking 並交代影響",
+          "passed": true,
+          "evidence": "outputs/answer.md: The chore(runtime)! subject raises minimum support to 22; its BREAKING CHANGE footer requires Node 22 or newer and explicitly drops 18 through 21. The explanation identifies older consumers as affected."
+        },
+        {
+          "text": "文件為 docs，revert 引用 abc1234 且不杜撰回復細節",
+          "passed": true,
+          "evidence": "outputs/answer.md: The docs subject fixes README typos; the revert subject and body cite abc1234 without inventing cache internals. It explicitly says the diff is unavailable and compatibility impact is unknown."
+        },
+        {
+          "text": "不保證未知版號、未知 release 設定或 revert 的發版效果",
+          "passed": true,
+          "evidence": "outputs/answer.md: The answer conditions major guidance on stable SemVer, notes separate 0.x policy, and declines a definite next version or guaranteed automatic release without settings. Revert patch/breaking classification is left unknown."
+        }
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1,
+        "stddev": 0.0,
+        "min": 1,
+        "max": 1
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 1,
+        "stddev": 0.0,
+        "min": 1,
+        "max": 1
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.00"
+    }
+  },
+  "notes": [
+    "每種設定僅各跑三題、每題一次；測試提示已明示關鍵限制，辨識力有限。",
+    "沒有可用的執行時間與 token 量測，未填入推算值或零值。",
+    "兩組回答皆通過時只能證明此組基本案例相容，不能證明 skill 帶來準確率提升。",
+    "詳細語意評分與測試限制見 analysis.md。"
+  ]
+}

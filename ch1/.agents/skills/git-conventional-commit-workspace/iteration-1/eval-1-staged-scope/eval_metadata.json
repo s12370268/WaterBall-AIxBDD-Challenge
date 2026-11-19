@@ -1,0 +1,10 @@
+{
+    "eval_id":  1,
+    "eval_name":  "staged-scope",
+    "prompt":  "請只根據以下 staged 摘要給我 commit message，不要執行 git：結帳 API 原本在同一 idempotency key 重試時會重複建立訂單，現在回傳既有訂單，並加了回歸測試。另有尚未 staged 的 README 錯字修正。專案慣例英文、小寫 type，scope 使用 checkout。只給訊息。",
+    "assertions":  [
+                       "使用英文 fix(checkout) 表達防止重複訂單",
+                       "只包含 staged 結帳修正及必要測試，不混入 README",
+                       "不捏造 issue、SHA 或已通過的測試結果"
+                   ]
+}

@@ -1,0 +1,10 @@
+{
+  "eval_id": 2,
+  "eval_name": "payment-refactor",
+  "prompt": "付款實作要花三週換供應商，還要把 customer_name 改成 given_name/family_name。舊新版服務可能並存，要每天合 main；請給可以逐步合併的切分、驗證與回退方案。",
+  "assertions": [
+    "以抽象、新舊實作並存與逐步切換將三週付款重構拆成可每日合併的步驟。",
+    "姓名欄位變更採 expand/migrate/contract，處理舊新版並存及不可可靠拆姓名的情形。",
+    "說明付款副作用、驗證與資料回復限制，不把 flag 關閉當成撤回交易。"
+  ]
+}

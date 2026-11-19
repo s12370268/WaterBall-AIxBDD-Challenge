@@ -1,0 +1,213 @@
+{
+  "metadata": {
+    "skill_name": "trunk-based-development",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "gitflow-transition",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "expectations": [
+        {
+          "text": "判斷目前兩週功能分支與每天拉 develop 不符合每日回到共同主幹的整合。",
+          "passed": true,
+          "evidence": "首段指出目前不符合 TBD；每天拉 develop 只是把更新帶入個人分支，兩週工作未回共同主幹。"
+        },
+        {
+          "text": "提供四週分階段計畫，處理三天 review 等待及四十分鐘 CI 的瓶頸。",
+          "passed": true,
+          "evidence": "四週表格涵蓋基線、CI 快取平行化、輪值審查、擴大試點與收斂 develop，各週有負責角色及退出條件。"
+        },
+        {
+          "text": "保留必要品質檢查，並區分每月發布與每日整合。",
+          "passed": true,
+          "evidence": "保留必要審查及保護規則，慢檢查明列發布門檻；明說每月發布不違反 TBD。"
+        }
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "gitflow-transition",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "expectations": [
+        {
+          "text": "判斷目前兩週功能分支與每天拉 develop 不符合每日回到共同主幹的整合。",
+          "passed": true,
+          "evidence": "首段明確判定不算 TBD，解釋取得別人變更與交回共同主線不同。"
+        },
+        {
+          "text": "提供四週分階段計畫，處理三天 review 等待及四十分鐘 CI 的瓶頸。",
+          "passed": true,
+          "evidence": "四週表格含八人輪值審查、數小時回覆、CI 快取平行化與分片、全員逐步轉向 main。"
+        },
+        {
+          "text": "保留必要品質檢查，並區分每月發布與每日整合。",
+          "passed": true,
+          "evidence": "必要檢查保護主線，完整四十分鐘套件持續執行；明確保留每月發布。"
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "payment-refactor",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "expectations": [
+        {
+          "text": "以抽象、新舊實作並存與逐步切換將三週付款重構拆成可每日合併的步驟。",
+          "passed": true,
+          "evidence": "七步表格先加測試及 PaymentGateway 抽象，逐項加入新 adapter、預設關閉、分批放量，最後清理。"
+        },
+        {
+          "text": "姓名欄位變更採 expand/migrate/contract，處理舊新版並存及不可可靠拆姓名的情形。",
+          "passed": true,
+          "evidence": "保留 customer_name、nullable 新欄位、偵測舊服務更新、條件式 backfill，說明無法普遍可靠拆姓名，contract 等舊服務退出。"
+        },
+        {
+          "text": "說明付款副作用、驗證與資料回復限制，不把 flag 關閉當成撤回交易。",
+          "passed": true,
+          "evidence": "禁止雙供應商實際扣款；持久化 provider 與冪等鍵，逾時先查狀態；關 flag 不撤銷扣款或資料寫入。"
+        }
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "payment-refactor",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "expectations": [
+        {
+          "text": "以抽象、新舊實作並存與逐步切換將三週付款重構拆成可每日合併的步驟。",
+          "passed": true,
+          "evidence": "七個小 PR 步驟建立抽象、逐項新 adapter、預設關閉旗標、分流及後續清理，強調三週不是分支壽命。"
+        },
+        {
+          "text": "姓名欄位變更採 expand/migrate/contract，處理舊新版並存及不可可靠拆姓名的情形。",
+          "passed": true,
+          "evidence": "新增 nullable 欄位、保留舊 API、明訂權威來源及舊寫入相容、可重跑回填；不以空格猜姓名，舊消費者退場後才清理。"
+        },
+        {
+          "text": "說明付款副作用、驗證與資料回復限制，不把 flag 關閉當成撤回交易。",
+          "passed": true,
+          "evidence": "限定單一供應商實際交易，未知結果先對帳；旗標關閉後既有交易仍按原供應商處理，不用破壞性 migration 回退。"
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "release-hotfix",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "expectations": [
+        {
+          "text": "允許無法在 main 重現時先修受影響版本，並追蹤 main 適用性與回歸證據。",
+          "passed": true,
+          "evidence": "首段允許先修 1.8；main 適用性工單有 owner、期限及退出條件，不把無法重現當安全證明。"
+        },
+        {
+          "text": "使用選擇性 backport 並分別判斷 1.9 是否受影響，避免整條 release merge 回 main。",
+          "passed": true,
+          "evidence": "步驟四獨立判斷 1.9，適用才 backport 並重驗；main 以等價修正或記錄已消除根因，禁止整枝合併。"
+        },
+        {
+          "text": "保留分支保護及必要驗證，不執行 Git 寫入。",
+          "passed": true,
+          "evidence": "小 PR、必要 CI、reviewer 與保護規則均保留；輸出及 transcript 明確只提供建議，僅寫測試產物。"
+        }
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "release-hotfix",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "expectations": [
+        {
+          "text": "允許無法在 main 重現時先修受影響版本，並追蹤 main 適用性與回歸證據。",
+          "passed": true,
+          "evidence": "先在 1.8 重現並測試修復，同步追蹤 main 根因與不變條件；若已消除根因，記錄對應提交及驗證。"
+        },
+        {
+          "text": "使用選擇性 backport 並分別判斷 1.9 是否受影響，避免整條 release merge 回 main。",
+          "passed": true,
+          "evidence": "步驟六為 1.9 與 main 分開建追蹤，適用時獨立小 PR 移植並測試，不作整枝 merge。"
+        },
+        {
+          "text": "保留分支保護及必要驗證，不執行 Git 寫入。",
+          "passed": true,
+          "evidence": "明確拒絕刪除保護，保留審查與檢查；既有正式緊急例外只限流程授權，非主管口頭刪規則；未執行 Git 寫入。"
+        }
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.00"
+    }
+  },
+  "notes": [
+    "每個設定由同一代理依序作答三題，並非逐題隔離。",
+    "每題僅一次，提示已明確提供限制；不構成一般準確率提升的證據。",
+    "無可用 task-level token 與 duration 量測，故省略。"
+  ]
+}

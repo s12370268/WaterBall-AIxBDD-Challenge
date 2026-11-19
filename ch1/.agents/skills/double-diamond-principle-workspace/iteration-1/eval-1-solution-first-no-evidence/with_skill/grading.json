@@ -1,0 +1,41 @@
+{
+  "expectations": [
+    {
+      "text": "將聊天機器人列為待驗證方案，而非已證實能降低流失的結論。",
+      "passed": true,
+      "evidence": "AI 聊天機器人先列候選方案。"
+    },
+    {
+      "text": "明確標示缺乏訪談及漏斗證據，沒有杜撰研究發現或基準數值。",
+      "passed": true,
+      "evidence": "以下是待執行計畫，尚無研究結果；未知，基準待量測。"
+    },
+    {
+      "text": "提出至少三種不同介入方向，並說明各自要驗證的假設或機制。",
+      "passed": true,
+      "evidence": "情境清單依賴閱讀、人工導入彈性高但人力貴、AI 答疑可能答錯且未必解決設定。"
+    },
+    {
+      "text": "提出未鎖定聊天機器人的暫定問題定義，並安排蒐證以檢查它。",
+      "passed": true,
+      "evidence": "假設新客在首次設定時缺乏可行指引；尚無資料支持因果。依卡點頻率、影響與反例重定義。"
+    },
+    {
+      "text": "測試計畫包含觀察指標及繼續、修改或淘汰的可辨識決策條件。",
+      "passed": true,
+      "evidence": "記錄獨立完成、耗時、錯誤、求助及客服工時；重大誤導停測；未改善任務則淘汰或修改。"
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "total": 5,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "output_chars_without_whitespace": 689
+  },
+  "eval_feedback": {
+    "overall": "流程可用性檢查；樣本少，且由 skill 作者評閱，不是盲測。"
+  }
+}
